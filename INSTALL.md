@@ -86,6 +86,21 @@ terraform apply
 
 If everything goes well pointing your browser to <https://ARGOCD_HOSTNAME> you should see the Argo CD web UI.
 
+Finally the Kubernetes [cluster must be added in Argo CD](https://argoproj.github.io/argo-cd/user-guide/commands/argocd_cluster_add/):
+
+```bash
+argocd cluster add contextname
+```
+
+and a [token must be generated](https://argoproj.github.io/argo-cd/user-guide/commands/argocd_account_generate-token/) for the backstage user:
+
+```bash
+argocd account update-password --account backstage
+argocd account generate-token --account backstage
+```
+
+and added to environment variable as explained [here](https://github.com/projectkerberus/kerberus-dashboard/blob/main/README.md).
+
 ## Uninstall
 
 ```bash
