@@ -215,4 +215,17 @@ resource "helm_release" "dashboard" {
     "${file("values-dashboard.yaml")}"
   ]
 
+  # app:
+  #   imageCredentials:
+  #     username: TBD
+  #     password: TBD
+  #     email: TBD
+    
+  #   env:
+  #     argo_token: TBD
+  #     github_client_id: TBD
+  #     github_client_secret: TBD
+  #     github_token: TBD
+  #     k8s_cluster_token: TBD
+
 }
