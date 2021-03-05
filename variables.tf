@@ -56,3 +56,10 @@ variable "ARGOCD_NAMESPACE" {
 variable "ARGOCD_HOSTNAME" {
   description = "FQDN for Argo web server"
 }
+
+# Dashboard vars
+
+variable "DASHBOARD_NAMESPACE" {
+  description = "namespace for dashboard installation"
+  default = "kerberus-dashboard-ns"
+}

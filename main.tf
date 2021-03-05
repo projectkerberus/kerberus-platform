@@ -141,7 +141,7 @@ resource "helm_release" "argocd" {
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
   values = [
-    "${file("values.yaml")}"
+    "${file("values-argo.yaml")}"
   ]
   set {
     name  = "image.pullPolicy"
@@ -193,4 +193,22 @@ resource "kubernetes_ingress" "argocd_ingress" {
       secret_name = "${var.ARGOCD_HOSTNAME}-tls"
     }
   }
+}
+
+resource "kubernetes_namespace" "dashboard_namespace" {
+  metadata {
+    name = var.DASHBOARD_NAMESPACE
+  }
+}
+
+resource "helm_release" "dashboard" {
+  depends_on = [ kubernetes_namespace.dashboard_namespace ]
+  name       = "kerberus-dashboard"
+  namespace  = var.ARGOCD_NAMESPACE
+  repository = "https://projectkerberus.github.io/kerberus-dashboard/"
+  chart      = "project-kerberus/kerberus-dashboard"
+  values = [
+    "${file("values-dashboard.yaml")}"
+  ]
+
 }

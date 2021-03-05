@@ -18,7 +18,6 @@ List of files:
 ├── main.tf                 MAIN Terraform recipe
 ├── output.tf               Terraform Output
 ├── README.md               This File 
-├── terraform.tfvars        Terraform variable definition
 ├── values.yaml             Argo CD helm chart values
 └── variables.tf            Terraform variable settings
 ```
