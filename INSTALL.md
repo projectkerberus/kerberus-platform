@@ -92,7 +92,7 @@ Finally the Kubernetes [cluster must be added in Argo CD](https://argoproj.githu
 argocd cluster add contextname
 ```
 
-and a [token must be generated](https://argoproj.github.io/argo-cd/user-guide/commands/argocd_account_generate-token/) for the backstage user:
+a [token must be generated](https://argoproj.github.io/argo-cd/user-guide/commands/argocd_account_generate-token/) for the backstage user:
 
 ```bash
 argocd account update-password --account backstage
