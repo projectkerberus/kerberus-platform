@@ -58,7 +58,7 @@ Create a file named `terraform.tvars` containing at minimum the following variab
 # GCP vars
 GCP_PROJECT = <GCP project ID>
 PATH_KUBECONFIG = <PATH to lcoal KUBECONFIG file>
-CROSSPLANE_REGISTRY = "idallaserra/platform-ref-gcp:latest"
+CROSSPLANE_REGISTRY = "ghcr.io/projectkerberus/platform-ref-gcp:latest"
 
 # Argo vars
 ARGOCD_HOSTNAME = <FQDN name of ARGO>
