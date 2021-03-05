@@ -213,19 +213,41 @@ resource "helm_release" "dashboard" {
   chart      = "project-kerberus/kerberus-dashboard"
   values = [
     "${file("values-dashboard.yaml")}"
-  ]
+    ]
 
-  # app:
-  #   imageCredentials:
-  #     username: TBD
-  #     password: TBD
-  #     email: TBD
-    
-  #   env:
-  #     argo_token: TBD
-  #     github_client_id: TBD
-  #     github_client_secret: TBD
-  #     github_token: TBD
-  #     k8s_cluster_token: TBD
+  set {
+    name   = "app.imageCredentials.username"
+    value  = var.IMAGE_CREDENTIALS_USERNAME
+  }
+
+   set {
+    name   = "app.imageCredentials.password"
+    value  = var.IMAGE_CREDENTIALS_PASSWORD
+  }
+
+   set {
+    name   = "app.imageCredentials.email"
+    value  = var.IMAGE_CREDENTIALS_EMAIL
+  }
+
+  set {
+    name   = "env.argo_token"
+    value  = var.ARGO_TOKEN
+  }
+
+ set {
+    name   = "env.github_client_id"
+    value  = var.GITHUB_CLIENT_ID
+  }
+ 
+ set {
+    name   = "env.github_client_secret"
+    value  = var.GITHUB_CLIENT_SECRETS
+  }
+
+set {
+    name   = "env.k8s_cluster_token"
+    value  = var.K8S_CLUSTER_TOKEN
+  }
 
 }

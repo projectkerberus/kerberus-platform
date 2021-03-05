@@ -63,3 +63,31 @@ variable "DASHBOARD_NAMESPACE" {
   description = "namespace for dashboard installation"
   default = "kerberus-dashboard-ns"
 }
+
+variable "IMAGE_CREDENTIALS_USERNAME" {
+  description = ""
+}
+
+variable "IMAGE_CREDENTIALS_PASSWORD" {
+  description = ""
+}
+
+variable "IMAGE_CREDENTIALS_EMAIL" {
+  description = ""
+}
+
+variable "ARGO_TOKEN" {
+  description = ""
+}
+
+variable "GITHUB_CLIENT_ID" {
+  description = ""
+}
+
+variable "GITHUB_CLIENT_SECRETS" {
+  description = ""
+}
+
+variable "K8S_CLUSTER_TOKEN" {
+  description = ""
+}
