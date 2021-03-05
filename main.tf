@@ -202,6 +202,10 @@ resource "kubernetes_namespace" "dashboard_namespace" {
 }
 
 resource "helm_release" "dashboard" {
+  provisioner "local-exec" {
+    command = "wget -O values-dashboard.yaml https://raw.githubusercontent.com/projectkerberus/kerberus-dashboard/main/charts/kerberus-dashboard/values.yaml"
+  }
+
   depends_on = [ kubernetes_namespace.dashboard_namespace ]
   name       = "kerberus-dashboard"
   namespace  = var.ARGOCD_NAMESPACE
