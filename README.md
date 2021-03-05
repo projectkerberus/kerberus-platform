@@ -1,5 +1,6 @@
-# Kerberus
-Kerberus is an open source tool, based CNCF projects such as Kubernetes and Crossplane, that gives users the capability to create any desired resource on basically any infrastructure they'd like. Be it a K8s cluster, microservice, application, pipeline, database or anything else, Kerberus has got your back. The only requirement is for the resource to be descriptible via a YAML file representing the resource's *desired state* (rings a bell? 😉).
+<img src="docs/media/logo.png" style="display: block; margin-left: auto; margin-right: auto; width: 100px;">
+
+**Kerberus** is an open source tool, based CNCF projects such as Kubernetes and Crossplane, that gives users the capability to create any desired resource on basically any infrastructure they'd like. Be it a K8s cluster, microservice, application, pipeline, database or anything else, Kerberus has got your back. The only requirement is for the resource to be descriptible via a YAML file representing the resource's *desired state* (rings a bell? 😉).
 
 Kerberus allows for:
 - **Creating any kind of resources within and outside the Kubernetes cluster it runs on**: whilst Kerberus runs as a Deployment in a Kubernetes cluster, it can also create resources *outside* the cluster. You can use Kerberus to create anything from new Kubernetes clusters, Logstash pipelines, Docker registries, API gateways, and many others.
@@ -19,4 +20,10 @@ In our vision, Kerberus is:
 
 ## Getting started
 Getting started with Kerberus is as easy as following its [installation instructions](./INSTALL.md).
+
+## Reference architecture
+We are aware we have mentioned many different software components so far, thus we see why you may be a tad confused. In summary, Kerberus' reference architecture can be depicted as follows:
+
+<img src="docs/media/reference_architecture.png" width="700px" alt="Kerberus' reference architecture"/>
+
 
