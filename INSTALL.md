@@ -41,6 +41,8 @@ In order to correctly install the platform there are some requirements:
 
 3. [Crossplane CLI](https://crossplane.io/docs/v1.0/getting-started/install-configure.html#install-crossplane-cli) locally installed;
 
+4. [Argo CD CLI](https://argoproj.github.io/argo-cd/cli_installation) locally installed.
+
 ### Created Resources
 
 The resources created are on GCP platform, so locally configured [gcloud CLI](https://cloud.google.com/sdk/gcloud) and a project previously created on it is required.
