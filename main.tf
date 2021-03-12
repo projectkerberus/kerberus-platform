@@ -105,7 +105,7 @@ metadata:
   name: default
 spec:
   # replace this with your own gcp project id
-  projectID: kerberusdemo
+  projectID: ${var.GCP_PROJECT}
   credentials:
     source: Secret
     secretRef:
@@ -126,7 +126,7 @@ resource "null_resource" "package_gcp" {
   }
 }
 
-# Installation of ArgoCD and relative Ingress
+# Installation of ArgoCD
 
 resource "kubernetes_namespace" "argo_namespace" {
   metadata {
@@ -141,56 +141,6 @@ resource "helm_release" "argocd" {
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
   values = [
-    "${file("values.yaml")}"
+    "${file("values-argo.yaml")}"
   ]
-  set {
-    name  = "image.pullPolicy"
-    value = "IfNotPresent"
-  }
-  
-  set {
-    name  = "installCRDs"
-    value = "false"
-  }
-
-  set {
-    name   = "server.extraArgs"
-    value  = "{--insecure}"
-  }
-
-}
-
-resource "kubernetes_ingress" "argocd_ingress" {
-  depends_on = [ helm_release.argocd ]
-  metadata {
-    name = "argocd"
-    namespace = var.ARGOCD_NAMESPACE
-    annotations = {
-      "cert-manager.io/cluster-issuer" = "letsencrypt-staging"
-      "kubernetes.io/ingress.class" = "contour"
-      "kubernetes.io/tls-acme" = "true"
-      "ingress.kubernetes.io/force-ssl-redirect" = "true"
-    }
-    labels = {
-      "app.kubernetes.io/name" = "argocd"
-    }
-  }
-  spec {
-    rule {
-      host = var.ARGOCD_HOSTNAME
-      http {
-        path {
-          backend {
-            service_name = "argocd-server"
-            service_port = "http"
-          }
-          path = "/"
-          }
-        }
-      }
-    tls {
-      hosts = [ var.ARGOCD_HOSTNAME ]
-      secret_name = "${var.ARGOCD_HOSTNAME}-tls"
-    }
-  }
 }
