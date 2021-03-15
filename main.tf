@@ -141,6 +141,6 @@ resource "helm_release" "argocd" {
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
   values = [
-    "${file("values-argo.yaml")}"
+    "${file("values.yaml")}"
   ]
 }
