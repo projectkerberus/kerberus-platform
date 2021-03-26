@@ -1,5 +1,9 @@
 FROM hashicorp/terraform:0.14.8
 
+FROM google/cloud-sdk:alpine
+
+COPY --from=0 /bin/terraform /usr/local/bin/ 
+
 ENV KUBE_LATEST_VERSION="v1.20.4"
 
 RUN apk add --update ca-certificates \
@@ -9,14 +13,18 @@ RUN apk add --update ca-certificates \
  && apk del --purge deps \
  && rm /var/cache/apk/*
 
-RUN kubectl version --client
+RUN apk add --update --no-cache jq 
 
-FROM google/cloud-sdk:alpine
+RUN curl -sL https://raw.githubusercontent.com/crossplane/crossplane/release-1.1/install.sh | sh
 
-ADD ./kerberusdemo-21c9a3ffdcfd.json /tmp/kerberusdemo-21c9a3ffdcfd.json
+ENV CROSSPLANE_REGISTRY="ghcr.io/projectkerberus/platform-ref-gcp:latest"
 
-RUN pwd
+RUN mkdir /kerberus-platform
 
-RUN gcloud config configurations create kerberus-gcp-config
-RUN gcloud auth activate-service-account --key-file /tmp/kerberusdemo-21c9a3ffdcfd.json
-RUN gcloud projects list 
+COPY ./terraform /kerberus-platform/
+
+WORKDIR /kerberus-platform
+
+RUN terraform init
+
+ENTRYPOINT ["terraform"]

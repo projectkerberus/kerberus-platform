@@ -15,3 +15,6 @@ server:
 
   rbacConfig:
     policy.default: role:admin
+
+  image: 
+    tag: latest

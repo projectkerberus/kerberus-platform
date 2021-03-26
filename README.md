@@ -1,5 +1,7 @@
 <img src="docs/media/square_black_horizontal.svg" width="400">
 
+![Terraform-Validate](https://github.com/projectkerberus/kerberus-platform/workflows/terraform-validate/badge.svg)
+
 **Kerberus** is an open source tool, based CNCF projects such as Kubernetes and Crossplane, that gives users the capability to create any desired resource on basically any infrastructure they'd like. Be it a K8s cluster, microservice, application, pipeline, database or anything else, Kerberus has got your back. The only requirement is for the resource to be descriptible via a YAML file representing the resource's *desired state* (rings a bell? 😉).
 
 Kerberus allows for:

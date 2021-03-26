@@ -6,36 +6,36 @@ variable "GCP_PROJECT" {
 
 variable "GCP_REGION" {
   description = "GCP resource region"
-  default = "europe-west3"
+  default     = "europe-west3"
 }
 
 variable "GCP_ZONE" {
   description = "GCP resource zone"
-  default = "europe-west3-a"
+  default     = "europe-west3-a"
 }
 
 variable "GCP_SA" {
   description = "SA to be used by Crossplane GCP Provider"
-  default = "crossplane"
+  default     = "crossplane"
 }
 
 variable "GCP_SERVICES" {
   description = "API Services to activate"
   type        = list(string)
-  default     = ["container.googleapis.com", "sqladmin.googleapis.com", "redis.googleapis.com", "compute.googleapis.com","servicenetworking.googleapis.com"]
+  default     = ["container.googleapis.com", "sqladmin.googleapis.com", "redis.googleapis.com", "compute.googleapis.com", "servicenetworking.googleapis.com"]
 }
 
 variable "GCP_ROLES" {
   description = "GCP Roles"
   type        = list(string)
-  default     = ["roles/iam.serviceAccountUser", "roles/cloudsql.admin", "roles/container.admin", "roles/redis.admin","roles/compute.networkAdmin", "roles/storage.admin"]
+  default     = ["roles/iam.serviceAccountUser", "roles/cloudsql.admin", "roles/container.admin", "roles/redis.admin", "roles/compute.networkAdmin", "roles/storage.admin"]
 }
 
 # Crossplane vars
 
 variable "CROSSPLANE_NAMESPACE" {
   description = "namespace for Crossplane installation"
-  default = "crossplane-system"
+  default     = "crossplane-system"
 }
 
 variable "PATH_KUBECONFIG" {
@@ -50,7 +50,7 @@ variable "CROSSPLANE_REGISTRY" {
 
 variable "ARGOCD_NAMESPACE" {
   description = "namespace for Argo installation"
-  default = "argo"
+  default     = "argo"
 }
 
 variable "ARGOCD_HOSTNAME" {
@@ -61,33 +61,37 @@ variable "ARGOCD_HOSTNAME" {
 
 variable "DASHBOARD_NAMESPACE" {
   description = "namespace for dashboard installation"
-  default = "kerberus-dashboard-ns"
+  default     = "kerberus-dashboard-ns"
 }
 
 variable "IMAGE_CREDENTIALS_USERNAME" {
   description = ""
+  default     = ""
 }
 
 variable "IMAGE_CREDENTIALS_PASSWORD" {
   description = ""
+  default     = ""
 }
 
 variable "IMAGE_CREDENTIALS_EMAIL" {
   description = ""
-}
-
-variable "ARGO_TOKEN" {
-  description = ""
+  default     = ""
 }
 
 variable "GITHUB_CLIENT_ID" {
-  description = ""
+  description = "Github client id"
 }
 
 variable "GITHUB_CLIENT_SECRETS" {
-  description = ""
+  description = "Github client secrets"
 }
 
-variable "K8S_CLUSTER_TOKEN" {
+variable "GITHUB_TOKEN" {
+  description = "Github personal access token, please see: https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token"
+}
+
+variable "CLIENT_ID_FILE" {
+  type        = string
   description = ""
 }
