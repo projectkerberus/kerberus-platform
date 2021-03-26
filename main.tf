@@ -141,6 +141,63 @@ resource "helm_release" "argocd" {
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
   values = [
-    "${file("values.yaml")}"
+    "${file("values-argo.yaml")}"
   ]
+}
+
+resource "kubernetes_namespace" "dashboard_namespace" {
+  metadata {
+    name = var.DASHBOARD_NAMESPACE
+  }
+}
+
+resource "helm_release" "dashboard" {
+  provisioner "local-exec" {
+    command = "wget -O values-dashboard.yaml https://raw.githubusercontent.com/projectkerberus/kerberus-dashboard/main/charts/kerberus-dashboard/values.yaml"
+  }
+
+  depends_on = [ kubernetes_namespace.dashboard_namespace ]
+  name       = "kerberus-dashboard"
+  namespace  = var.ARGOCD_NAMESPACE
+  repository = "https://projectkerberus.github.io/kerberus-dashboard/"
+  chart      = "project-kerberus/kerberus-dashboard"
+  values = [
+    "${file("values-dashboard.yaml")}"
+    ]
+
+  set {
+    name   = "app.imageCredentials.username"
+    value  = var.IMAGE_CREDENTIALS_USERNAME
+  }
+
+   set {
+    name   = "app.imageCredentials.password"
+    value  = var.IMAGE_CREDENTIALS_PASSWORD
+  }
+
+   set {
+    name   = "app.imageCredentials.email"
+    value  = var.IMAGE_CREDENTIALS_EMAIL
+  }
+
+  set {
+    name   = "env.argo_token"
+    value  = var.ARGO_TOKEN
+  }
+
+ set {
+    name   = "env.github_client_id"
+    value  = var.GITHUB_CLIENT_ID
+  }
+ 
+ set {
+    name   = "env.github_client_secret"
+    value  = var.GITHUB_CLIENT_SECRETS
+  }
+
+set {
+    name   = "env.k8s_cluster_token"
+    value  = var.K8S_CLUSTER_TOKEN
+  }
+
 }
