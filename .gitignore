@@ -71,3 +71,5 @@ override.tf.json
 .ionide
 
 *NOTES.md
+
+data/
