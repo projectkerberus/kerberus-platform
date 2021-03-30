@@ -2,116 +2,89 @@
 
 ## Description
 
-The installer is composed of a Terraform recipe which install and configure the following component on a Kubernetes cluster:
+The installer is composed of a Terraform recipe which installs and configure the following component on a Kubernetes cluster:
 
 - [Crossplane](https://github.com/crossplane/crossplane), the [GCP](https://github.com/crossplane/provider-gcp) and [helm](https://github.com/crossplane-contrib/provider-helm) provider;
-- installation of a Crossplane package for [GCP platform reference](https://github.com/idallaserra/platform-ref-gcp) defining the api and XRD for Networking, GKE and CloudSQL resources;
+- installation of a Crossplane package for [GCP platform reference](https://github.com/idallaserra/platform-ref-gcp) defining the API and XRD for Networking, GKE, and CloudSQL resources;
 - GCP service account with required permission for creating the resources;
 - [Argo CD](https://argoproj.github.io/projects/argo-cd) for GitOps resources management with relative Ingress Controller.
-
-List of files:
-
-```console
-├── CODE_OF_CONDUCT.md      Code of Conduct FIle
-├── CONTRIBUTING.md         Contributing File
-├── LICENSE                 License File
-├── main.tf                 MAIN Terraform recipe
-├── output.tf               Terraform Output
-├── README.md               This File 
-├── values.yaml             Argo CD helm chart values
-└── variables.tf            Terraform variable settings
-```
 
 
 ## Requirements
 
 ### Kerberus Platform
 
-In order to correctly install the platform there are some requirements:
+To correctly install the platform there are some requirements:
 
-1. [Terraform OSS](https://www.terraform.io/downloads.html) (tested with version v0.14.4)
-
-2. a Kubernetes cluster with local `KUBECONFIG` and [kubectl CLI](https://kubernetes.io/docs/reference/kubectl/) with [application default](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login) configured.
-
-    The cluster must run:
-
-- an ingress controller for example [Contour](https://projectcontour.io/);
-- [cert-manager](https://cert-manager.io/docs/) component installed and configured to serve a FQDN registered domain;\
-- [prometheus-operator](https://github.com/prometheus-operator/prometheus-operator) (optional);
-
-3. [Crossplane CLI](https://crossplane.io/docs/v1.0/getting-started/install-configure.html#install-crossplane-cli) locally installed;
-
-4. [Argo CD CLI](https://argoproj.github.io/argo-cd/cli_installation) locally installed.
+1. [docker](https://www.docker.com/);
+2. a Kubernetes cluster with default storage-class and the relative `kubeconfig` file;
+3. a [gcp project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) and the [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys);
+4. GitHub client_id, client_secret, and token.
 
 ### Created Resources
 
-The resources created are on GCP platform, so locally configured [gcloud CLI](https://cloud.google.com/sdk/gcloud) and a project previously created on it is required.
+The resources created are on GCP platform, so locally configured [gcloud CLI](https://cloud.google.com/sdk/gcloud) and a project previously created on it are required.
 
 Since the Installer takes care of creating the necessary service account on the platform GCP, owner permission on the project is a must.
 
 ## Installation
 
-Fir step clone the repo 
-`git clone <repourl>`
+1. Create a folder (in this tutorial we will refer to them with the name of `kerberus-platform`) to store our files and the `terraform.tfstate`:
 
-Create a file named `terraform.tvars` containing at minimum the following variables:
+```shell
+mkdir kerberus-platform
+```
 
-```bash
+2. Inside the `kerberus-platform` folder do the following:
+
+   * Copy your  `kubeconfig` file;
+
+   * Copy your [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys);
+
+   * create a file named `terraform.tvars` containing at minimum the following variables:
+
+```yaml
+# K8S vars
+PATH_KUBECONFIG       = "./kerberus-platform/<KUBECONFIG file name>"
+
 # GCP vars
-GCP_PROJECT = <GCP project ID>
-PATH_KUBECONFIG = <PATH to lcoal KUBECONFIG file>
-CROSSPLANE_REGISTRY = "ghcr.io/projectkerberus/platform-ref-gcp:latest"
+GCP_PROJECT           = <GCP project ID>
+GCP_SA                = <GCP service account name>
+CLIENT_ID_FILE        = "./kerberus-platform/<GCP service account key file name>"
+CROSSPLANE_REGISTRY   = "ghcr.io/projectkerberus/platform-ref-gcp:latest"
 
 # Argo vars
-ARGOCD_HOSTNAME = <FQDN name of ARGO>
+ARGOCD_HOSTNAME       = <FQDN name of ARGO>
+
+# GitHub Vars
+GITHUB_CLIENT_ID      = <GitHub client ID>
+GITHUB_CLIENT_SECRETS = <GitHub clinet secrets>
+GITHUB_TOKEN          = <GitHub token>
 ```
 
-Change the values `argocdServerAdminPassword` in file `values.yaml`.
+3. Review and check the execution plan:
 
-Initialize Terraform working directory:
-
-```bash
-terraform init
+```shell
+docker run --name=kerberus-plan -v --rm <path-to-kerberus-folder>/kerberus-platform/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform plan --var-file=./data/terraform.tfvars
 ```
 
-Review and check the execution plan:
+4. Apply the plan:
 
 ```bash
-terraform plan
-```
-
-Apply the plan:
-
-```bash
-terraform apply
+docker run --name=kerberus-apply -v --rm <path-to-kerberus-folder>/kerberus-platform/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform apply --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
 ```
 
 If everything goes well pointing your browser to <https://ARGOCD_HOSTNAME> you should see the Argo CD web UI.
 
-Finally the Kubernetes [cluster must be added in Argo CD](https://argoproj.github.io/argo-cd/user-guide/commands/argocd_cluster_add/):
-
-```bash
-argocd cluster add contextname
-```
-
-a [token must be generated](https://argoproj.github.io/argo-cd/user-guide/commands/argocd_account_generate-token/) for the backstage user:
-
-```bash
-argocd account update-password --account backstage
-argocd account generate-token --account backstage
-```
-
-and added to environment variable as explained [here](https://github.com/projectkerberus/kerberus-dashboard/blob/main/README.md).
-
 ## Uninstall
 
 ```bash
-terraform destroy
+docker run --name=kerberus-destroy -v --rm <path-to-kerberus-folder>/kerberus-platform/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform destroy --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
 ```
 
 Be careful, like explained in the [Crossplane documentation](https://crossplane.io/docs/v1.0/getting-started/install-configure.html#install-crossplane-cli) CRD resources are not removed using helm, so additional command is required:
 
-```bash
+```shell
 kubectl patch lock lock -p '{"metadata":{"finalizers": []}}' --type=merge
 kubectl get crd -o name | grep crossplane.io | xargs kubectl delete
 ```
@@ -128,4 +101,3 @@ Please refer to Contributing file in repository.
 ## License
 
 Please refer to LICENSE file in repository.
-  
