@@ -32,10 +32,10 @@ Since the Installer takes care of creating the necessary service account on the 
 1. Create a folder (in this tutorial we will refer to them with the name of `kerberus-platform`) to store our files and the `terraform.tfstate`:
 
 ```shell
-mkdir kerberus-platform
+mkdir data
 ```
 
-2. Inside the `kerberus-platform` folder do the following:
+2. Inside the `data` folder do the following:
 
    * Copy your  `kubeconfig` file;
 
@@ -45,12 +45,12 @@ mkdir kerberus-platform
 
 ```yaml
 # K8S vars
-PATH_KUBECONFIG       = "./kerberus-platform/<KUBECONFIG file name>"
+PATH_KUBECONFIG       = "./data/<KUBECONFIG file name>"
 
 # GCP vars
 GCP_PROJECT           = <GCP project ID>
 GCP_SA                = <GCP service account name>
-CLIENT_ID_FILE        = "./kerberus-platform/<GCP service account key file name>"
+CLIENT_ID_FILE        = "./data/<GCP service account key file name>"
 CROSSPLANE_REGISTRY   = "ghcr.io/projectkerberus/platform-ref-gcp:latest"
 
 # Argo vars
@@ -65,13 +65,13 @@ GITHUB_TOKEN          = <GitHub token>
 3. Review and check the execution plan:
 
 ```shell
-docker run --name=kerberus-plan -v --rm <path-to-kerberus-folder>/kerberus-platform/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform plan --var-file=./data/terraform.tfvars
+docker run --name=kerberus-plan -v --rm <path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform plan --var-file=./data/terraform.tfvars
 ```
 
 4. Apply the plan:
 
 ```bash
-docker run --name=kerberus-apply -v --rm <path-to-kerberus-folder>/kerberus-platform/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform apply --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
+docker run --name=kerberus-apply -v --rm <path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform apply --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
 ```
 
 If everything goes well pointing your browser to <https://ARGOCD_HOSTNAME> you should see the Argo CD web UI.
@@ -79,7 +79,7 @@ If everything goes well pointing your browser to <https://ARGOCD_HOSTNAME> you s
 ## Uninstall
 
 ```bash
-docker run --name=kerberus-destroy -v --rm <path-to-kerberus-folder>/kerberus-platform/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform destroy --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
+docker run --name=kerberus-destroy -v --rm <path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform destroy --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
 ```
 
 Be careful, like explained in the [Crossplane documentation](https://crossplane.io/docs/v1.0/getting-started/install-configure.html#install-crossplane-cli) CRD resources are not removed using helm, so additional command is required:
