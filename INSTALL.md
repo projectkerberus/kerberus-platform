@@ -41,7 +41,7 @@ mkdir data
 
    * Copy your [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys);
 
-   * create a file named `terraform.tvars` containing at minimum the following variables:
+   * create a file named `terraform.tfvars` containing at minimum the following variables:
 
 ```yaml
 # K8S vars
@@ -65,13 +65,13 @@ GITHUB_TOKEN          = <GitHub token>
 3. Review and check the execution plan:
 
 ```shell
-docker run --name=kerberus-plan --rm -v ./data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform plan --var-file=./data/terraform.tfvars
+docker run --name=kerberus-plan --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.1.0 plan -var-file=./data/terraform.tfvars
 ```
 
 4. Apply the plan:
 
 ```bash
-docker run --name=kerberus-apply --rm -v ./data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform apply --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
+docker run --name=kerberus-plan --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.1.0 apply --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
 ```
 
 If everything goes well pointing your browser to <https://ARGOCD_HOSTNAME> you should see the Argo CD web UI.
@@ -79,7 +79,7 @@ If everything goes well pointing your browser to <https://ARGOCD_HOSTNAME> you s
 ## Uninstall
 
 ```bash
-docker run --name=kerberus-destroy -v --rm <path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform destroy --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
+docker run --name=kerberus-plan --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.1.0 destroy --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
 ```
 
 Be careful, like explained in the [Crossplane documentation](https://crossplane.io/docs/v1.0/getting-started/install-configure.html#install-crossplane-cli) CRD resources are not removed using helm, so additional command is required:
