@@ -65,13 +65,13 @@ GITHUB_TOKEN          = <GitHub token>
 3. Review and check the execution plan:
 
 ```shell
-docker run --name=kerberus-plan -v --rm <path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform plan --var-file=./data/terraform.tfvars
+docker run --name=kerberus-plan --rm -v ./data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform plan --var-file=./data/terraform.tfvars
 ```
 
 4. Apply the plan:
 
 ```bash
-docker run --name=kerberus-apply -v --rm <path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform apply --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
+docker run --name=kerberus-apply --rm -v ./data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform apply --auto-approve --var-file=./data/terraform.tfvars -state=./data/terraform.tfstate 
 ```
 
 If everything goes well pointing your browser to <https://ARGOCD_HOSTNAME> you should see the Argo CD web UI.
