@@ -48,18 +48,18 @@ mkdir data
 PATH_KUBECONFIG       = "./data/<KUBECONFIG file name>"
 
 # GCP vars
-GCP_PROJECT           = <GCP project ID>
-GCP_SA                = <GCP service account name>
+GCP_PROJECT           = "<GCP project ID>"
+GCP_SA                = "<GCP service account name>"
 CLIENT_ID_FILE        = "./data/<GCP service account key file name>"
 CROSSPLANE_REGISTRY   = "ghcr.io/projectkerberus/platform-ref-gcp:latest"
 
 # Argo vars
-ARGOCD_HOSTNAME       = <FQDN name of ARGO>
+ARGOCD_HOSTNAME       = "<FQDN name of ARGO>"
 
 # GitHub Vars
-GITHUB_CLIENT_ID      = <GitHub client ID>
-GITHUB_CLIENT_SECRETS = <GitHub clinet secrets>
-GITHUB_TOKEN          = <GitHub token>
+GITHUB_CLIENT_ID      = "<GitHub client ID>"
+GITHUB_CLIENT_SECRETS = "<GitHub clinet secrets>"
+GITHUB_TOKEN          = "<GitHub token>"
 ```
 
 3. Review and check the execution plan:
