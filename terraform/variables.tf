@@ -31,15 +31,21 @@ variable "GCP_ROLES" {
   default     = ["roles/iam.serviceAccountUser", "roles/cloudsql.admin", "roles/container.admin", "roles/redis.admin", "roles/compute.networkAdmin", "roles/storage.admin"]
 }
 
+# Kubernetes vars
+
+variable "PATH_KUBECONFIG" {
+  description = "path kubeconfig"
+}
+
+variable "INSECURE_KUBECONFIG" {
+  description = "Whether the server should be accessed without verifying the TLS certificate"
+}
+
 # Crossplane vars
 
 variable "CROSSPLANE_NAMESPACE" {
   description = "namespace for Crossplane installation"
   default     = "crossplane-system"
-}
-
-variable "PATH_KUBECONFIG" {
-  description = "path kubeconfig"
 }
 
 variable "CROSSPLANE_REGISTRY" {
