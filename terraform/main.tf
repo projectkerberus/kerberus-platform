@@ -29,6 +29,7 @@ terraform {
 
 provider "kubernetes" {
   config_path = var.PATH_KUBECONFIG
+  insecure = var.INSECURE_KUBECONFIG != null ? var.INSECURE_KUBECONFIG : false 
 }
 
 provider "kubectl" {
