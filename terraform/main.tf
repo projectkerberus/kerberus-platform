@@ -261,7 +261,6 @@ resource "helm_release" "kerberus_dashboard" {
   namespace  = kubernetes_namespace.kerberus_dashboard_namespace.metadata[0].name
   repository = "https://projectkerberus.github.io/kerberus-dashboard/"
   chart      = "kerberus-dashboard"
-  values     = [file(join("/", [path.module, "files", "kerberus-dashboard", "values.yaml"]))]
 
   set {
     name  = "env.argo_token"
