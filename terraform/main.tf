@@ -29,13 +29,13 @@ terraform {
 
 provider "kubernetes" {
   config_path = var.PATH_KUBECONFIG
-  insecure = var.INSECURE_KUBECONFIG != null ? var.INSECURE_KUBECONFIG : false 
+  insecure    = var.INSECURE_KUBECONFIG
 }
 
 provider "kubectl" {
   load_config_file  = true
   apply_retry_count = 15
-  config_path = var.PATH_KUBECONFIG
+  config_path       = var.PATH_KUBECONFIG
 }
 
 provider "helm" {
@@ -64,6 +64,7 @@ resource "helm_release" "crossplane" {
   namespace  = var.CROSSPLANE_NAMESPACE
   repository = "https://charts.crossplane.io/stable"
   chart      = "crossplane"
+  version    = var.CROSSPLANE_VERSION
 
   set {
     name  = "image.pullPolicy"
@@ -74,28 +75,6 @@ resource "helm_release" "crossplane" {
     name  = "provider.packages"
     value = "{crossplane/provider-gcp:v0.15.0,crossplane/provider-helm:v0.5.0}"
   }
-
-  # Fix while we wait for pull request: https://github.com/crossplane/crossplane/pull/2240/commits/f630b80dd82c4bbef6c74d3e26861598f4666c2e
-  set {
-    name  = "securityContextCrossplane.runAsUser"
-    value = "65532"
-  }
-
-  set {
-    name  = "securityContextCrossplane.runAsGroup"
-    value = "65532"
-  }
-
-  set {
-    name  = "securityContextRBACManager.runAsUser"
-    value = "65532"
-  }
-
-  set {
-    name  = "securityContextRBACManager.runAsGroup"
-    value = "65532"
-  }
-
 }
 
 data "google_project" "my_project" {
@@ -139,22 +118,20 @@ resource "kubernetes_secret" "gcp-credential" {
 
 # Configuration of Crossplane Resources
 
-resource "null_resource" "crossplane_getall" {
-  depends_on = [helm_release.crossplane]
-  provisioner "local-exec" {
-    command = "KUBECONFIG=${abspath(var.PATH_KUBECONFIG)} kubectl get all -n '${var.CROSSPLANE_NAMESPACE}'"
-  }
-}
-
 resource "null_resource" "configuration_package_gcp" {
   depends_on = [helm_release.crossplane]
-  provisioner "local-exec" {
-    command = "KUBECONFIG=${abspath(var.PATH_KUBECONFIG)} kubectl crossplane install configuration '${var.CROSSPLANE_REGISTRY}'"
+
+  triggers = {
+    kubeconfig = abspath(var.PATH_KUBECONFIG)
   }
-  # TODO: fix the destroy with the kubeconfig path
+
+  provisioner "local-exec" {
+    command = join("", ["KUBECONFIG=", self.triggers.kubeconfig, " kubectl crossplane install configuration ", var.CROSSPLANE_REGISTRY])
+  }
+
   provisioner "local-exec" {
     when    = destroy
-    command = "kubectl delete --all configurations.pkg.crossplane.io"
+    command = join("", ["KUBECONFIG=", self.triggers.kubeconfig, " kubectl delete configurations.pkg.crossplane.io --all"])
   }
 }
 
@@ -171,14 +148,14 @@ resource "helm_release" "argocd" {
   namespace  = kubernetes_namespace.argo_namespace.metadata[0].name
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
-  values     = [file(join("/", [path.module, "files", "argocd", "values.yaml"]))]
+  values     = var.ARGOCD_VALUES_PATH != "" ? [file(var.ARGOCD_VALUES_PATH)] : []
 }
 
 resource "null_resource" "arcocg_wait" {
   depends_on = [helm_release.argocd]
 
   provisioner "local-exec" {
-    command = "kubectl --kubeconfig=${abspath(var.PATH_KUBECONFIG)} rollout status deploy/argocd-server -n ${var.ARGOCD_NAMESPACE}"
+    command = join("", ["KUBECONFIG=", abspath(var.PATH_KUBECONFIG), " kubectl rollout status deploy/argocd-server -n ", var.ARGOCD_NAMESPACE])
   }
 }
 
@@ -250,10 +227,7 @@ resource "helm_release" "kerberus_dashboard" {
   namespace  = kubernetes_namespace.kerberus_dashboard_namespace.metadata[0].name
   repository = "https://projectkerberus.github.io/kerberus-dashboard/"
   chart      = "kerberus-dashboard"
-
-  values = [
-    templatefile(var.KERBERUS_DASHBOARD_VALUES_PATH, { KERBERUS_DASHBOARD_URL = var.KERBERUS_DASHBOARD_URL })
-  ]
+  values     = var.KERBERUS_DASHBOARD_VALUES_PATH != "" ? [file(var.KERBERUS_DASHBOARD_VALUES_PATH)] : []
 
   set {
     name  = "env.argo_token"
@@ -275,10 +249,10 @@ resource "helm_release" "kerberus_dashboard" {
     value = var.GITHUB_TOKEN
   }
 
-#  set {
-#    name  = "env.k8s_cluster_token"
-#    value = data.kubernetes_secret.retreive_kerberus_dashboard_service_account_token.data["token"]
-#  }
+  #  set {
+  #    name  = "env.k8s_cluster_token"
+  #    value = data.kubernetes_secret.retreive_kerberus_dashboard_service_account_token.data["token"]
+  #  }
 
   set {
     name  = "env.kubernetes.token"
