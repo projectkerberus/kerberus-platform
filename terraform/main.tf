@@ -35,6 +35,7 @@ provider "kubernetes" {
 provider "kubectl" {
   load_config_file  = true
   apply_retry_count = 15
+  config_path = var.PATH_KUBECONFIG
 }
 
 provider "helm" {
@@ -136,31 +137,19 @@ resource "kubernetes_secret" "gcp-credential" {
   }
 }
 
-# Configuratrion of Crossplane Resources
+# Configuration of Crossplane Resources
 
-resource "kubectl_manifest" "providerconfig" {
-  depends_on = [helm_release.crossplane, kubernetes_secret.gcp-credential]
-  yaml_body  = <<YAML
-apiVersion: gcp.crossplane.io/v1beta1
-kind: ProviderConfig
-metadata:
-  name: default
-spec:
-  # replace this with your own gcp project id
-  projectID: ${var.GCP_PROJECT}
-  credentials:
-    source: Secret
-    secretRef:
-      namespace: crossplane-system
-      name: gcp-creds
-      key: credentials
-YAML
+resource "null_resource" "crossplane_getall" {
+  depends_on = [helm_release.crossplane]
+  provisioner "local-exec" {
+    command = "KUBECONFIG=${abspath(var.PATH_KUBECONFIG)} kubectl get all -n '${var.CROSSPLANE_NAMESPACE}'"
+  }
 }
 
-resource "null_resource" "package_gcp" {
-  depends_on = [kubectl_manifest.providerconfig]
+resource "null_resource" "configuration_package_gcp" {
+  depends_on = [helm_release.crossplane]
   provisioner "local-exec" {
-    command = "kubectl --kubeconfig=${abspath(var.PATH_KUBECONFIG)} crossplane install configuration '${var.CROSSPLANE_REGISTRY}'"
+    command = "KUBECONFIG=${abspath(var.PATH_KUBECONFIG)} kubectl crossplane install configuration '${var.CROSSPLANE_REGISTRY}'"
   }
   # TODO: fix the destroy with the kubeconfig path
   provisioner "local-exec" {
@@ -189,7 +178,7 @@ resource "null_resource" "arcocg_wait" {
   depends_on = [helm_release.argocd]
 
   provisioner "local-exec" {
-    command = "kubectl --kubeconfig=${abspath(var.PATH_KUBECONFIG)} rollout status deploy/argocd-server -n argo"
+    command = "kubectl --kubeconfig=${abspath(var.PATH_KUBECONFIG)} rollout status deploy/argocd-server -n ${var.ARGOCD_NAMESPACE}"
   }
 }
 
@@ -209,7 +198,7 @@ data "external" "generate_argocd_token" {
 
   query = {
     argo_password = data.kubernetes_secret.retreive_argocd_password.data["password"]
-    argo_hostname = var.ARGOCD_HOSTNAME
+    argo_hostname = var.ARGOCD_URL
   }
 }
 
@@ -261,7 +250,10 @@ resource "helm_release" "kerberus_dashboard" {
   namespace  = kubernetes_namespace.kerberus_dashboard_namespace.metadata[0].name
   repository = "https://projectkerberus.github.io/kerberus-dashboard/"
   chart      = "kerberus-dashboard"
-  values     = [file(join("/", [path.module, "files", "kerberus-dashboard", "values.yaml"]))]
+
+  values = [
+    templatefile(var.KERBERUS_DASHBOARD_VALUES_PATH, { KERBERUS_DASHBOARD_URL = var.KERBERUS_DASHBOARD_URL })
+  ]
 
   set {
     name  = "env.argo_token"
@@ -283,9 +275,18 @@ resource "helm_release" "kerberus_dashboard" {
     value = var.GITHUB_TOKEN
   }
 
+#  set {
+#    name  = "env.k8s_cluster_token"
+#    value = data.kubernetes_secret.retreive_kerberus_dashboard_service_account_token.data["token"]
+#  }
+
   set {
-    name  = "env.k8s_cluster_token"
+    name  = "env.kubernetes.token"
     value = data.kubernetes_secret.retreive_kerberus_dashboard_service_account_token.data["token"]
   }
 
+  set {
+    name  = "env.kubernetes.url"
+    value = var.KERBERUS_K8S_ENDPOINT
+  }
 }

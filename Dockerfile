@@ -16,6 +16,9 @@ RUN apk add --update ca-certificates \
 RUN apk add --update --no-cache jq 
 
 RUN curl -sL https://raw.githubusercontent.com/crossplane/crossplane/release-1.1/install.sh | sh
+RUN mv kubectl-crossplane /usr/local/bin
+RUN ls -la /usr/local/bin
+RUN kubectl crossplane --help
 
 ENV CROSSPLANE_REGISTRY="ghcr.io/projectkerberus/platform-ref-gcp:latest"
 

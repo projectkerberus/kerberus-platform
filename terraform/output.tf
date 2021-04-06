@@ -1,11 +1,11 @@
 
 output "argocd_endpoint" {
-  description = "Argo LINK"
-  value       = "https://${var.ARGOCD_HOSTNAME}"
+  description = "ArgoCD link"
+  value       = "https://${var.ARGOCD_URL}"
 }
 
 output "argocd_password" {
-  description = "Argo password"
+  description = "ArgoCD password"
   value       = data.kubernetes_secret.retreive_argocd_password.data["password"]
 }
 

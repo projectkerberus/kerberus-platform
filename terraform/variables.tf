@@ -41,6 +41,10 @@ variable "INSECURE_KUBECONFIG" {
   description = "Whether the server should be accessed without verifying the TLS certificate"
 }
 
+variable "KERBERUS_K8S_ENDPOINT" {
+  description = "Kubernetes API endpoint for Kerberus"
+}
+
 # Crossplane vars
 
 variable "CROSSPLANE_NAMESPACE" {
@@ -56,18 +60,23 @@ variable "CROSSPLANE_REGISTRY" {
 
 variable "ARGOCD_NAMESPACE" {
   description = "namespace for Argo installation"
-  default     = "argo"
+  default     = "argo-system"
 }
 
-variable "ARGOCD_HOSTNAME" {
-  description = "FQDN for Argo web server"
+variable "ARGOCD_URL" {
+  description = "FQDN for Argo CD GUI"
+}
+
+variable "ARGOCD_VALUES_PATH" {
+  description = "Argo CD helm chart values.yaml path"
+  default = ""
 }
 
 # Dashboard vars
 
 variable "DASHBOARD_NAMESPACE" {
   description = "namespace for dashboard installation"
-  default     = "kerberus-dashboard-ns"
+  default     = "kerberus-dashboard-system"
 }
 
 variable "IMAGE_CREDENTIALS_USERNAME" {
@@ -100,4 +109,13 @@ variable "GITHUB_TOKEN" {
 variable "CLIENT_ID_FILE" {
   type        = string
   description = ""
+}
+
+variable "KERBERUS_DASHBOARD_URL" {
+  description = "FQDN for Kerberus Dashboard GUI"
+}
+
+variable "KERBERUS_DASHBOARD_VALUES_PATH" {
+  description = "Kerberus Dashboard helm chart values.yaml path"
+  default = ""
 }
