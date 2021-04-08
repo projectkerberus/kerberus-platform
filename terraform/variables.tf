@@ -39,6 +39,8 @@ variable "PATH_KUBECONFIG" {
 
 variable "INSECURE_KUBECONFIG" {
   description = "Whether the server should be accessed without verifying the TLS certificate"
+  type        = bool
+  default     = false
 }
 
 variable "KERBERUS_K8S_ENDPOINT" {
@@ -50,6 +52,12 @@ variable "KERBERUS_K8S_ENDPOINT" {
 variable "CROSSPLANE_NAMESPACE" {
   description = "namespace for Crossplane installation"
   default     = "crossplane-system"
+}
+
+variable "CROSSPLANE_VERSION" {
+  description = "The desired crossplane version"
+  type        = string
+  default     = "v1.1.1"
 }
 
 variable "CROSSPLANE_REGISTRY" {
@@ -69,7 +77,7 @@ variable "ARGOCD_URL" {
 
 variable "ARGOCD_VALUES_PATH" {
   description = "Argo CD helm chart values.yaml path"
-  default = ""
+  default     = ""
 }
 
 # Dashboard vars
@@ -117,5 +125,5 @@ variable "KERBERUS_DASHBOARD_URL" {
 
 variable "KERBERUS_DASHBOARD_VALUES_PATH" {
   description = "Kerberus Dashboard helm chart values.yaml path"
-  default = ""
+  default     = ""
 }
