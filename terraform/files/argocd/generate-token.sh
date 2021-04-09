@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set +x
 
 test -f $(which jq) || error_exit "jq command not detected in path, please install it"
 
