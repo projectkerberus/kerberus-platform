@@ -149,32 +149,6 @@ resource "helm_release" "argocd" {
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
   values     = var.ARGOCD_VALUES_PATH != "" ? [file(var.ARGOCD_VALUES_PATH)] : []
-  
-  set {
-    name  = "server.extraArgs"
-    value = "{\"--insecure\"}"
-  }
-  
-  set {
-    name  = "server.config.accounts.kerberus-dashboard"
-    value = "apiKey"
-  }
-  
-  set {
-    name  = "server.config.accounts.kerberus-dashboard.enabled"
-    value = "true"
-  }
-  
-  set {
-    name  = "server.rbacConfig.policy.default"
-    value = "role:admin"
-  }
-  
-  set {
-    name  = "server.config.url"
-    value = "role:admin"
-  }
-
 }
 
 resource "null_resource" "arcocg_wait" {
