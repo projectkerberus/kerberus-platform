@@ -151,8 +151,8 @@ resource "helm_release" "argocd" {
   values     = var.ARGOCD_VALUES_PATH != "" ? [file(var.ARGOCD_VALUES_PATH)] : []
   
   set {
-    name  = "server.extraArgs[0].values[0]"
-    value = "--insecure"
+    name  = "server.extraArgs"
+    value = "{\"--insecure\"}"
   }
   
   set {
