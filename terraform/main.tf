@@ -221,7 +221,7 @@ data "kubernetes_secret" "retreive_kerberus_dashboard_service_account_token" {
 
 resource "helm_release" "kerberus_dashboard" {
 
-  depends_on = [kubernetes_namespace.kerberus_dashboard_namespace]
+  depends_on = [kubernetes_namespace.kerberus_dashboard_namespace, data.external.generate_argocd_token]
 
   name       = "kerberus-dashboard"
   namespace  = kubernetes_namespace.kerberus_dashboard_namespace.metadata[0].name
