@@ -1,7 +1,7 @@
 
 output "argocd_endpoint" {
   description = "ArgoCD link"
-  value       = "${var.ARGOCD_URL}"
+  value       = var.ARGOCD_URL
 }
 
 output "argocd_password" {
