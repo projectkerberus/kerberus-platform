@@ -245,7 +245,7 @@ resource "helm_release" "kerberus_dashboard" {
   }
 
   set {
-    name  = "githubToken"
+    name  = "auth.githubToken"
     value = var.GITHUB_TOKEN
   }
 
