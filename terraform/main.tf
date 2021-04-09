@@ -230,22 +230,22 @@ resource "helm_release" "kerberus_dashboard" {
   values     = var.KERBERUS_DASHBOARD_VALUES_PATH != "" ? [file(var.KERBERUS_DASHBOARD_VALUES_PATH)] : []
 
   set {
-    name  = "env.argo_token"
+    name  = "argocd.token"
     value = lookup(data.external.generate_argocd_token.result, "argo_token")
   }
 
   set {
-    name  = "env.github_client_id"
+    name  = "auth.github.clientId"
     value = var.GITHUB_CLIENT_ID
   }
 
   set {
-    name  = "env.github_client_secret"
+    name  = "auth.github.clientSecret"
     value = var.GITHUB_CLIENT_SECRETS
   }
 
   set {
-    name  = "env.github_token"
+    name  = "githubToken"
     value = var.GITHUB_TOKEN
   }
 
@@ -255,12 +255,12 @@ resource "helm_release" "kerberus_dashboard" {
   #  }
 
   set {
-    name  = "env.kubernetes.token"
+    name  = "kubernetes.token"
     value = data.kubernetes_secret.retreive_kerberus_dashboard_service_account_token.data["token"]
   }
 
   set {
-    name  = "env.kubernetes.url"
+    name  = "kubernetes.url"
     value = var.KERBERUS_K8S_ENDPOINT
   }
 }
