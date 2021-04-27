@@ -1,0 +1,32 @@
+name: 'Terraform Validate'
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+defaults:
+  run:
+    working-directory: ./terraform
+
+jobs:
+  terraform-validate:
+    name: Validate the Terraform configuration files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+
+      - name: Terraform Format
+        run: terraform fmt -recursive -check
+
+      - name: Terraform Validate
+        run: terraform validate
