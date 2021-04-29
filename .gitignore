@@ -3,6 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+.idea/
 
 # Icon must end with two \r
 Icon
@@ -73,3 +74,5 @@ override.tf.json
 *NOTES.md
 
 data/
+
+.terraformrc
