@@ -113,6 +113,9 @@ variable "GITHUB_CLIENT_SECRETS" {
 variable "GITHUB_TOKEN" {
   description = "Github personal access token, please see: https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token"
 }
+variable "GITLAB_TOKEN" {
+  description = "GitLab personal access token, please see: https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token"
+}
 
 variable "CLIENT_ID_FILE" {
   type        = string

@@ -256,6 +256,11 @@ resource "helm_release" "kerberus_dashboard" {
     value = var.GITHUB_TOKEN
   }
 
+  set {
+    name  = "auth.gitlabToken"
+    value = var.GITLAB_TOKEN
+  }
+
   #  set {
   #    name  = "env.k8s_cluster_token"
   #    value = data.kubernetes_secret.retreive_kerberus_dashboard_service_account_token.data["token"]
