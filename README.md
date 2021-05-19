@@ -3,7 +3,7 @@
 [![Terraform Validate](https://github.com/projectkerberus/kerberus-platform/actions/workflows/terraform-validate.yml/badge.svg)](https://github.com/projectkerberus/kerberus-platform/actions/workflows/terraform-validate.yml)
 [![CI to GHCR](https://github.com/projectkerberus/kerberus-platform/actions/workflows/docker-build.yml/badge.svg)](https://github.com/projectkerberus/kerberus-platform/actions/workflows/docker-build.yml)
 
-**Kerberus** is an open source tool, based CNCF projects such as Kubernetes and Crossplane, that gives users the capability to create any desired resource on basically any infrastructure they'd like. Be it a K8s cluster, microservice, application, pipeline, database or anything else, Kerberus has got your back. The only requirement is for the resource to be descriptible via a YAML file representing the resource's *desired state* (rings a bell? 😉).
+**Kerberus** is an open source tool, based on CNCF projects such as Kubernetes and Crossplane, that gives users the capability to create any desired resource on basically any infrastructure they'd like. Be it a K8s cluster, microservice, application, pipeline, database or anything else, Kerberus has got your back. The only requirement is for the resource to be descriptible via a YAML file representing the resource's *desired state* (rings a bell? 😉).
 
 Kerberus allows for:
 
