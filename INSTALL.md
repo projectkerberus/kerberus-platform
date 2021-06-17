@@ -18,18 +18,12 @@ To correctly install the platform there are some requirements:
 
 1. [docker](https://www.docker.com/);
 2. a Kubernetes cluster with default storage-class and the relative `kubeconfig` file;
-3. a [gcp project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) and the [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys);
+3. a [gcp project](https://cloud.google.com/resource-manager/docs/creating-managing-projects) and the [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) (Since the Installer takes care of creating the necessary service account on the platform GCP, owner permission on the project is a must);
 4. GitHub client_id, client_secret, and token.
 
-### Created Resources
+## Installation with Docker
 
-The resources created are on GCP platform, so locally configured [gcloud CLI](https://cloud.google.com/sdk/gcloud) and a project previously created on it are required.
-
-Since the Installer takes care of creating the necessary service account on the platform GCP, owner permission on the project is a must.
-
-## Installation
-
-1. Create a folder (in this tutorial we will refer to them with the name of `kerberus-platform`) to store our files and the `terraform.tfstate`:
+1. Create a folder (in this tutorial we will refer to them with the name of `data`) to store our files and the `terraform.tfstate`:
 
 ```shell
 mkdir data
@@ -43,43 +37,42 @@ mkdir data
 
    * create a file named `terraform.tfvars` containing at minimum the following variables:
 
-```yaml
-# K8S vars
-PATH_KUBECONFIG       = "./data/<KUBECONFIG file name>"
+    ```yaml
+    # K8S vars
+    path_kubeconfig       = "./data/<KUBECONFIG file name>"
+    kerberus_k8s_endpoint = "<kubernetes api endpoint>"
 
-# GCP vars
-GCP_PROJECT           = "<GCP project ID>"
-GCP_SA                = "<GCP service account name>"
-CLIENT_ID_FILE        = "./data/<GCP service account key file name>"
-CROSSPLANE_REGISTRY   = "ghcr.io/projectkerberus/platform-ref-gcp:latest"
+    # GCP vars
+    gcp_project            = "<GCP project ID>"
+    gcp_sa_key_path        = "./data/<GCP service account key file name>"
 
-# Argo vars
-ARGOCD_HOSTNAME       = "<FQDN name of ARGO>"
+    # Argo vars
+    argocd_url         = "<domain name of ARGOCD>"
 
-# GitHub Vars
-GITHUB_CLIENT_ID      = "<GitHub client ID>"
-GITHUB_CLIENT_SECRETS = "<GitHub clinet secrets>"
-GITHUB_TOKEN          = "<GitHub token>"
-```
+    # GitHub Vars
+    github_client_id      = "<GitHub client ID>"
+    github_client_secrets = "<GitHub clinet secrets>"
+    github_token          = "<GitHub token>"
+    ```
 
 3. Review and check the execution plan:
 
-```shell
-docker run --name=kerberus-plan --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.1.0 plan -var-file=./data/terraform.tfvars
-```
+    ```shell
+    docker run --name=kerberus-plan --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.2.0 plan -var-file=./data/terraform.tfvars
+    ```
 
 4. Apply the plan:
 
-```bash
-docker run --name=kerberus-apply --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.1.0 apply --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
-```
+    ```bash
+    docker run --name=kerberus-apply --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.2.0 apply --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
+    ```
 
 If everything goes well pointing your browser to <https://ARGOCD_HOSTNAME> you should see the Argo CD web UI.
 
 ## Uninstall
 
 ```bash
-docker run --name=kerberus-destroy --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.1.0 destroy --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
+docker run --name=kerberus-destroy --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.2.0 destroy --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
 ```
 
 Be careful, like explained in the [Crossplane documentation](https://crossplane.io/docs/v1.0/getting-started/install-configure.html#install-crossplane-cli) CRD resources are not removed using helm, so additional command is required:
@@ -100,4 +93,4 @@ Please refer to Contributing file in repository.
 
 ## License
 
-Please refer to LICENSE file in repository.
+See [LICENSE](./LICENSE) for full details.

@@ -1,15 +1,17 @@
 
 output "argocd_endpoint" {
   description = "ArgoCD link"
-  value       = var.ARGOCD_URL
+  value       = var.argocd_url
 }
 
 output "argocd_password" {
   description = "ArgoCD password"
-  value       = data.kubernetes_secret.retreive_argocd_password.data["password"]
+  value       = module.argocd.argocd_password
+  sensitive   = true
 }
 
 output "argocd_token" {
   description = "To remove only for debug"
-  value       = lookup(data.external.generate_argocd_token.result, "argo_token")
+  value       = module.argocd.argocd_token
+  sensitive   = true
 }
