@@ -174,7 +174,7 @@ variable "kerberus_dashboard_chart" {
 variable "kerberus_dashboard_chart_version" {
   description = "Specify the exact Kerberus chart version to install. If this is not specified, the latest version is installed."
   type        = string
-  default     = "0.1.0"
+  default     = "0.2.0"
 }
 
 variable "kerberus_dashboard_values_path" {
