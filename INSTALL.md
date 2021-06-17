@@ -48,7 +48,6 @@ mkdir data
 
     # Argo vars
     argocd_url         = "<domain name of ARGOCD>"
-    argocd_values_path = "./data/argocd_values.yaml"
 
     # GitHub Vars
     github_client_id      = "<GitHub client ID>"
