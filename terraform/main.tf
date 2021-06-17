@@ -69,4 +69,11 @@ module "kerberus_dashboard" {
   github_token          = var.github_token
 
   gitlab_token = var.gitlab_token
+
+  github_app_id             = var.github_app_id
+  github_app_webhook_url    = var.github_app_webhook_url
+  github_app_client_id      = var.github_app_client_id
+  github_app_client_secret  = var.github_app_client_secret
+  github_app_webhook_secret = var.github_app_webhook_secret
+  github_app_private_key    = var.github_app_private_key
 }

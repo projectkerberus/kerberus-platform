@@ -209,3 +209,39 @@ variable "gitlab_token" {
   type        = string
   default     = ""
 }
+
+variable "github_app_id" {
+  description = "GitHub App ID"
+  type        = string
+  default     = ""
+}
+
+variable "github_app_client_id" {
+  description = "GitHub App ClientID. GitHub Apps can use OAuth credentials to identify users."
+  type        = string
+  default     = ""
+}
+
+variable "github_app_client_secret" {
+  description = "GitHub App Secret. GitHub Apps can use OAuth credentials to identify users."
+  type        = string
+  default     = ""
+}
+
+variable "github_app_webhook_url" {
+  description = "GitHub App Webhook URL. Webhooks allow you to build or set up integrations, such as GitHub Apps or OAuth Apps, which subscribe to certain events on GitHub.com."
+  type        = string
+  default     = ""
+}
+
+variable "github_app_webhook_secret" {
+  description = "GitHub App Webhook secret. Webhooks allow you to build or set up integrations, such as GitHub Apps or OAuth Apps, which subscribe to certain events on GitHub.com."
+  type        = string
+  default     = ""
+}
+
+variable "github_app_private_key" {
+  description = "GitHub App Private key. You need a private key to sign access token requests."
+  type        = string
+  default     = ""
+}
