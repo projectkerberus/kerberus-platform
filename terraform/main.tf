@@ -36,15 +36,18 @@ module "crossplane" {
 
 module "argocd" {
   source  = "projectkerberus/argocd/kerberus"
-  version = "0.2.1"
+  version = "0.2.2"
 
-  argocd_namespace                = var.argocd_namespace
-  argocd_repository               = var.argocd_repository
-  argocd_chart                    = var.argocd_chart
-  argocd_chart_version            = var.argocd_chart_version
-  argocd_url                      = var.argocd_url
-  argocd_values_path              = var.argocd_values_path
-  argocd_kerberus_service_account = var.argocd_kerberus_service_account
+  argocd_namespace                 = var.argocd_namespace
+  argocd_repository                = var.argocd_repository
+  argocd_chart                     = var.argocd_chart
+  argocd_chart_version             = var.argocd_chart_version
+  argocd_url                       = var.argocd_url
+  argocd_values_path               = var.argocd_values_path
+  argocd_kerberus_service_account  = var.argocd_kerberus_service_account
+  argocd_rbacConfig_policy_default = var.argocd_rbacConfig_policy_default
+  argocd_server_extra_args         = var.argocd_server_extra_args
+
 
   path_kubeconfig = var.path_kubeconfig
 }
