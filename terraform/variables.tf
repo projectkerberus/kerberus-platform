@@ -140,6 +140,18 @@ variable "argocd_kerberus_service_account" {
   default     = "kerberus-dashboard"
 }
 
+variable "argocd_rbacConfig_policy_default" {
+  description = "Argo CD pre-defined roles, it can be role:readonly or role:admin. For more information see: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md"
+  type        = string
+  default     = "role:admin"
+}
+
+variable "argocd_server_extra_args" {
+  description = "ArgoCD server extra args"
+  type        = list(string)
+  default     = ["--insecure"]
+}
+
 #### Kerberus Dashboard####
 
 variable "kerberus_k8s_endpoint" {
