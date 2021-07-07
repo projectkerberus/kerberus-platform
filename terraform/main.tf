@@ -54,7 +54,7 @@ module "argocd" {
 
 module "kerberus_dashboard" {
   source  = "projectkerberus/dashboard/kerberus"
-  version = "0.2.0"
+  version = "0.2.1"
 
   kerberus_k8s_endpoint            = var.kerberus_k8s_endpoint
   kerberus_dashboard_namespace     = var.kerberus_dashboard_namespace
