@@ -67,9 +67,9 @@ module "kerberus_dashboard" {
   argocd_token = module.argocd.argocd_token
   argocd_url   = var.argocd_url
 
-  github_client_id      = var.github_client_id
-  github_client_secrets = var.github_client_secrets
-  github_token          = var.github_token
+  github_client_id      = var.github_app_client_id
+  github_client_secrets = var.github_app_client_secret
+  github_token          = "dummy-token"
 
   gitlab_token = var.gitlab_token
 

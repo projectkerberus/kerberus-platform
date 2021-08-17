@@ -195,32 +195,14 @@ variable "kerberus_dashboard_values_path" {
   default     = ""
 }
 
-#### Github ####
-
-variable "github_client_id" {
-  description = "Github OAuth Apps client id"
-  type        = string
-  default     = ""
-}
-
-variable "github_client_secrets" {
-  description = "Github OAuth Apps client secrets"
-  type        = string
-  default     = ""
-}
-
-variable "github_token" {
-  description = "Github personal access token, please see: https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token"
-  type        = string
-  default     = ""
-}
-
 #### Gitlab ####
 variable "gitlab_token" {
   description = "GitLab personal access token, please see: https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token"
   type        = string
   default     = ""
 }
+
+#### Github ####
 
 variable "github_app_id" {
   description = "GitHub App ID"
@@ -243,13 +225,13 @@ variable "github_app_client_secret" {
 variable "github_app_webhook_url" {
   description = "GitHub App Webhook URL. Webhooks allow you to build or set up integrations, such as GitHub Apps or OAuth Apps, which subscribe to certain events on GitHub.com."
   type        = string
-  default     = ""
+  default     = "https://projectkerberus.io/"
 }
 
 variable "github_app_webhook_secret" {
   description = "GitHub App Webhook secret. Webhooks allow you to build or set up integrations, such as GitHub Apps or OAuth Apps, which subscribe to certain events on GitHub.com."
   type        = string
-  default     = ""
+  default     = "projectkerberus"
 }
 
 variable "github_app_private_key" {

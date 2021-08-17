@@ -1,0 +1,46 @@
+frontend:
+  enabled: true
+
+backend:
+  enabled: true
+
+lighthouse:
+  enabled: false
+
+ingress:
+  enabled: false
+  
+appConfig:
+  app:
+    baseUrl: <kerberus-dashboard-fqdn>
+    support:
+      url: https://github.com/projectkerberus/kerberus-dashboard/issues # Used by common ErrorPage
+      items: # Used by common SupportButton component
+        - title: Issues
+          icon: github
+          links:
+            - url: https://github.com/projectkerberus/kerberus-dashboard/issues
+              title: GitHub Issues
+
+
+  backend:
+    baseUrl: <kerberus-dashboard-fqdn>
+    cors:
+      origin: <kerberus-dashboard-fqdn>
+  techdocs:
+    storageUrl: <kerberus-dashboard-fqdn>/api/techdocs/static/docs
+    requestUrl: <kerberus-dashboard-fqdn>/api/techdocs
+  lighthouse:
+    baseUrl: <kerberus-dashboard-fqdn>/lighthouse-api
+
+  auth:
+    providers:
+      github:
+        development:
+          appOrigin: <kerberus-dashboard-fqdn>
+
+  proxy:
+    '/argocd/api':
+      # url to the api of your hosted argoCD instance
+      target: <argocd-fqdn>
+
