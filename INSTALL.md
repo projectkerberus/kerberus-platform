@@ -139,6 +139,8 @@ To correctly install the platform there are some requirements:
 
 8. Expose <https://KERBERUS_DASHBOARD_HOSTNAME> and Enjoy! 
 
+> If you don't know where to start, you can read the [Kerberus Dashboard Tutorial](https://github.com/projectkerberus/kerberus-dashboard/blob/main/docs/TUTORIAL.md).
+
 ## Uninstall
 
 ```bash
