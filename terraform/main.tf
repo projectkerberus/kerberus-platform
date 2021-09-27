@@ -54,7 +54,7 @@ module "argocd" {
 
 module "kerberus_dashboard" {
   source  = "projectkerberus/dashboard/kerberus"
-  version = "0.2.1"
+  version = "0.2.2"
 
   kerberus_k8s_endpoint            = var.kerberus_k8s_endpoint
   kerberus_dashboard_namespace     = var.kerberus_dashboard_namespace
@@ -69,7 +69,7 @@ module "kerberus_dashboard" {
 
   github_client_id      = var.github_app_client_id
   github_client_secrets = var.github_app_client_secret
-  github_token          = "dummy-token"
+  github_token          = var.github_token
 
   gitlab_token = var.gitlab_token
 
