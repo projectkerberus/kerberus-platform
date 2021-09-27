@@ -109,13 +109,13 @@ To correctly install the platform there are some requirements:
 
     ```shell
     cd ..
-    docker run --name=kerberus-plan --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.2.2 plan -var-file=./data/terraform.tfvars
+    docker run --name=kerberus-plan --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:latest plan -var-file=./data/terraform.tfvars
     ```
 
 6. Apply the plan:
 
     ```bash
-    docker run --name=kerberus-apply --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.2.2 apply --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
+    docker run --name=kerberus-apply --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:latest apply --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
     ```
 
 7. If Terraform fails with the following error:
@@ -139,7 +139,7 @@ To correctly install the platform there are some requirements:
 8. Run Terraform apply again:
 
     ```bash
-    docker run --name=kerberus-apply --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.2.2 apply --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
+    docker run --name=kerberus-apply --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:latest apply --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
     ```
 
 9. Expose <https://KERBERUS_DASHBOARD_HOSTNAME> and Enjoy! 
@@ -149,7 +149,7 @@ To correctly install the platform there are some requirements:
 ## Uninstall
 
 ```bash
-docker run --name=kerberus-destroy --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:0.2.2 destroy --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
+docker run --name=kerberus-destroy --rm -v <abs-path-to-data-folder>/data:/kerberus-platform/data ghcr.io/projectkerberus/kerberus-platform:latest destroy --auto-approve -var-file=./data/terraform.tfvars -state=./data/terraform.tfstate
 ```
 
 Be careful, like explained in the [Crossplane documentation](https://crossplane.io/docs/v1.0/getting-started/install-configure.html#install-crossplane-cli) CRD resources are not removed, so additional command is required:
