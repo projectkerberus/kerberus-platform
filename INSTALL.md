@@ -146,6 +146,15 @@ To correctly install the platform there are some requirements:
 
 > If you don't know where to start, you can read the [Kerberus Dashboard Tutorial](https://github.com/projectkerberus/kerberus-dashboard/blob/main/docs/TUTORIAL.md).
 
+## Enable Active Directory (AD)
+To enable AD you need to add the following vars to your `terraform.tfvars`:
+
+```yaml
+microsoft_client_id = "<AD client id>"
+microsoft_client_secrets = "<AD client secret>"
+microsoft_tenantId = "<AD tenant id>"
+```
+
 ## Uninstall
 
 ```bash

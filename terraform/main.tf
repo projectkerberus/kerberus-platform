@@ -54,7 +54,7 @@ module "argocd" {
 
 module "kerberus_dashboard" {
   source  = "projectkerberus/dashboard/kerberus"
-  version = "0.2.2"
+  version = "0.2.3"
 
   kerberus_k8s_endpoint            = var.kerberus_k8s_endpoint
   kerberus_dashboard_namespace     = var.kerberus_dashboard_namespace
@@ -79,4 +79,8 @@ module "kerberus_dashboard" {
   github_app_client_secret  = var.github_app_client_secret
   github_app_webhook_secret = var.github_app_webhook_secret
   github_app_private_key    = var.github_app_private_key
+
+  microsoft_client_id      = var.microsoft_client_id
+  microsoft_client_secrets = var.microsoft_client_secrets
+  microsoft_tenantId       = var.microsoft_tenantId
 }
