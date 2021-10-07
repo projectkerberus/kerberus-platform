@@ -186,7 +186,7 @@ variable "kerberus_dashboard_chart" {
 variable "kerberus_dashboard_chart_version" {
   description = "Specify the exact Kerberus chart version to install. If this is not specified, the latest version is installed."
   type        = string
-  default     = "0.3.83"
+  default     = "0.3.84"
 }
 
 variable "kerberus_dashboard_values_path" {
@@ -242,6 +242,25 @@ variable "github_app_webhook_secret" {
 
 variable "github_app_private_key" {
   description = "GitHub App Private key. You need a private key to sign access token requests."
+  type        = string
+  default     = ""
+}
+
+#AD
+variable "microsoft_client_id" {
+  description = "Microsoft AD client id"
+  type        = string
+  default     = ""
+}
+
+variable "microsoft_client_secrets" {
+  description = "Microsoft AD client secrets"
+  type        = string
+  default     = ""
+}
+
+variable "microsoft_tenantId" {
+  description = "Microsoft AD tenantId"
   type        = string
   default     = ""
 }
